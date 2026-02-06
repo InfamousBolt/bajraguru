@@ -95,6 +95,9 @@ export default function AdminProducts() {
                   <th className="px-6 py-4 font-body text-xs font-semibold uppercase tracking-wider text-warm-gray">
                     Price
                   </th>
+                  <th className="hidden px-6 py-4 font-body text-xs font-semibold uppercase tracking-wider text-warm-gray lg:table-cell">
+                    Variants
+                  </th>
                   <th className="hidden px-6 py-4 font-body text-xs font-semibold uppercase tracking-wider text-warm-gray sm:table-cell">
                     Status
                   </th>
@@ -129,6 +132,33 @@ export default function AdminProducts() {
                     </td>
                     <td className="px-6 py-4 font-body text-sm text-charcoal">
                       {formatPrice(product.price)}
+                    </td>
+                    <td className="hidden px-6 py-4 lg:table-cell">
+                      <div className="flex gap-2">
+                        {(() => {
+                          let sCount = 0;
+                          let cCount = 0;
+                          try { sCount = product.available_sizes ? JSON.parse(product.available_sizes).length : 0; } catch {}
+                          try { cCount = product.available_colors ? JSON.parse(product.available_colors).length : 0; } catch {}
+                          return (
+                            <>
+                              {sCount > 0 && (
+                                <span className="rounded-full bg-sage/10 px-2.5 py-0.5 font-body text-xs text-sage-dark">
+                                  {sCount} size{sCount !== 1 ? 's' : ''}
+                                </span>
+                              )}
+                              {cCount > 0 && (
+                                <span className="rounded-full bg-gold/10 px-2.5 py-0.5 font-body text-xs text-gold">
+                                  {cCount} color{cCount !== 1 ? 's' : ''}
+                                </span>
+                              )}
+                              {sCount === 0 && cCount === 0 && (
+                                <span className="font-body text-xs text-warm-gray">—</span>
+                              )}
+                            </>
+                          );
+                        })()}
+                      </div>
                     </td>
                     <td className="hidden px-6 py-4 sm:table-cell">
                       <span

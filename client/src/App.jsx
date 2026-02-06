@@ -1,7 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/common/Navbar';
 import Footer from './components/common/Footer';
@@ -11,10 +10,10 @@ import Loading from './components/common/Loading';
 import Home from './pages/Home';
 import Shop from './pages/Shop';
 import ProductDetail from './pages/ProductDetail';
-import Cart from './pages/Cart';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import Feedback from './pages/Feedback';
+import Services from './pages/Services';
 
 // Admin pages (lazy-loaded)
 const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
@@ -53,17 +52,16 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <CartProvider>
           <BrowserRouter>
             <Routes>
               {/* Public routes */}
               <Route path="/" element={<Layout><Home /></Layout>} />
               <Route path="/shop" element={<Layout><Shop /></Layout>} />
               <Route path="/shop/:id" element={<Layout><ProductDetail /></Layout>} />
-              <Route path="/cart" element={<Layout><Cart /></Layout>} />
               <Route path="/about" element={<Layout><About /></Layout>} />
               <Route path="/contact" element={<Layout><Contact /></Layout>} />
               <Route path="/feedback" element={<Layout><Feedback /></Layout>} />
+              <Route path="/services" element={<Layout><Services /></Layout>} />
 
               {/* Admin routes (no navbar/footer) */}
               <Route path="/admin/login" element={<AdminRoute><AdminLogin /></AdminRoute>} />
@@ -73,7 +71,6 @@ export default function App() {
               <Route path="/admin/products/:id/edit" element={<AdminRoute><AdminProductForm /></AdminRoute>} />
             </Routes>
           </BrowserRouter>
-        </CartProvider>
       </AuthProvider>
     </QueryClientProvider>
   );

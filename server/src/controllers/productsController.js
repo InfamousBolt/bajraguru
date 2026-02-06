@@ -138,7 +138,7 @@ function getById(req, res) {
 function create(req, res) {
   try {
     const db = getDb();
-    const { name, description, price, category, featured, in_stock, popularity_score } = req.body;
+    const { name, description, price, category, featured, in_stock, popularity_score, available_sizes, available_colors } = req.body;
 
     if (!name || !description || price === undefined || !category) {
       return res.status(400).json({ error: 'Name, description, price, and category are required.' });
@@ -154,8 +154,8 @@ function create(req, res) {
     const id = uuidv4();
 
     const stmt = db.prepare(`
-      INSERT INTO products (id, name, description, price, category, featured, in_stock, popularity_score)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO products (id, name, description, price, category, featured, in_stock, popularity_score, available_sizes, available_colors)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
     stmt.run(
@@ -166,7 +166,9 @@ function create(req, res) {
       category,
       featured ? 1 : 0,
       in_stock !== undefined ? (in_stock ? 1 : 0) : 1,
-      parseInt(popularity_score, 10) || 0
+      parseInt(popularity_score, 10) || 0,
+      available_sizes || null,
+      available_colors || null
     );
 
     const created = db.prepare('SELECT * FROM products WHERE id = ?').get(id);
@@ -186,7 +188,7 @@ function update(req, res) {
   try {
     const db = getDb();
     const { id } = req.params;
-    const { name, description, price, category, featured, in_stock, popularity_score } = req.body;
+    const { name, description, price, category, featured, in_stock, popularity_score, available_sizes, available_colors } = req.body;
 
     const existing = db.prepare('SELECT * FROM products WHERE id = ?').get(id);
     if (!existing) {
@@ -211,6 +213,8 @@ function update(req, res) {
         featured = COALESCE(?, featured),
         in_stock = COALESCE(?, in_stock),
         popularity_score = COALESCE(?, popularity_score),
+        available_sizes = COALESCE(?, available_sizes),
+        available_colors = COALESCE(?, available_colors),
         updated_at = datetime('now')
       WHERE id = ?
     `);
@@ -223,6 +227,8 @@ function update(req, res) {
       featured !== undefined ? (featured ? 1 : 0) : null,
       in_stock !== undefined ? (in_stock ? 1 : 0) : null,
       popularity_score !== undefined ? parseInt(popularity_score, 10) : null,
+      available_sizes !== undefined ? available_sizes : null,
+      available_colors !== undefined ? available_colors : null,
       id
     );
 

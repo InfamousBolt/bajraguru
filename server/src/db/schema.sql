@@ -7,6 +7,8 @@ CREATE TABLE IF NOT EXISTS products (
   featured INTEGER DEFAULT 0,
   in_stock INTEGER DEFAULT 1,
   popularity_score INTEGER DEFAULT 0,
+  available_sizes TEXT,
+  available_colors TEXT,
   created_at TEXT DEFAULT (datetime('now')),
   updated_at TEXT DEFAULT (datetime('now'))
 );

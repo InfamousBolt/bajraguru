@@ -1,20 +1,19 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ShoppingBag } from 'lucide-react';
-import { useCart } from '../../hooks/useCart';
 import { formatPrice } from '../../utils/formatPrice';
 
 export default function ProductCard({ product }) {
-  const { addToCart } = useCart();
-
-  const { _id, name, price, category, images } = product;
+  const { id, name, price, category, images, available_colors } = product;
   const imageUrl = images?.[0]?.url || '/placeholder.jpg';
 
-  const handleAddToCart = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    addToCart(product, 1);
-  };
+  let colors = [];
+  if (available_colors) {
+    try {
+      colors = typeof available_colors === 'string' ? JSON.parse(available_colors) : available_colors;
+    } catch {
+      colors = [];
+    }
+  }
 
   return (
     <motion.div
@@ -24,7 +23,7 @@ export default function ProductCard({ product }) {
       whileHover={{ y: -4 }}
       className="group"
     >
-      <Link to={`/shop/${_id}`} className="block">
+      <Link to={`/shop/${id}`} className="block">
         <div className="overflow-hidden rounded-2xl bg-white shadow-sm transition-shadow duration-300 group-hover:shadow-lg">
           {/* Image */}
           <div className="relative aspect-[3/4] overflow-hidden bg-sand">
@@ -43,17 +42,10 @@ export default function ProductCard({ product }) {
               </span>
             )}
 
-            {/* Quick add button */}
-            <motion.button
-              initial={{ opacity: 0, y: 10 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={handleAddToCart}
-              className="absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center rounded-full bg-sage text-white opacity-0 shadow-md transition-opacity duration-300 group-hover:opacity-100"
-              aria-label="Add to cart"
-            >
-              <ShoppingBag size={16} strokeWidth={1.5} />
-            </motion.button>
+            {/* Inquire button on hover */}
+            <span className="absolute bottom-3 right-3 rounded-full bg-sage px-4 py-2 font-body text-xs font-medium text-white opacity-0 shadow-md transition-opacity duration-300 group-hover:opacity-100">
+              Inquire
+            </span>
           </div>
 
           {/* Info */}
@@ -64,6 +56,22 @@ export default function ProductCard({ product }) {
             <p className="mt-1 font-body text-sm font-medium text-warm-gray">
               {formatPrice(price)}
             </p>
+            {/* Color swatches */}
+            {colors.length > 0 && (
+              <div className="mt-2 flex gap-1.5">
+                {colors.slice(0, 5).map((c, i) => (
+                  <span
+                    key={i}
+                    title={c.name}
+                    className="h-4 w-4 rounded-full border border-sand"
+                    style={{ backgroundColor: c.hex }}
+                  />
+                ))}
+                {colors.length > 5 && (
+                  <span className="font-body text-xs text-warm-gray">+{colors.length - 5}</span>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </Link>

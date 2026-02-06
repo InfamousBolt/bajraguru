@@ -1,12 +1,11 @@
 import { useState, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence, useMotionValue } from 'framer-motion';
-import { ShoppingBag, Minus, Plus, ChevronLeft, ChevronRight, Check } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Mail, MessageCircle } from 'lucide-react';
 import { useProduct, useProducts } from '../hooks/useProducts';
-import { useCart } from '../hooks/useCart';
 import { formatPrice } from '../utils/formatPrice';
+import { WHATSAPP_NUMBER, EMAIL } from '../config/contact';
 import ProductCard from '../components/common/ProductCard';
-import Button from '../components/common/Button';
 import Loading from '../components/common/Loading';
 
 export default function ProductDetail() {
@@ -14,10 +13,7 @@ export default function ProductDetail() {
   const { data, isLoading } = useProduct(id);
   const product = data?.product;
 
-  const { addToCart } = useCart();
-  const [quantity, setQuantity] = useState(1);
   const [activeImage, setActiveImage] = useState(0);
-  const [added, setAdded] = useState(false);
   const [dragging, setDragging] = useState(false);
 
   const containerRef = useRef(null);
@@ -71,11 +67,31 @@ export default function ProductDetail() {
     }
   };
 
-  const handleAddToCart = () => {
-    addToCart({ ...product, _id: product.id, images: product.images }, quantity);
-    setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
-  };
+  // Parse sizes and colors
+  let sizes = [];
+  let colors = [];
+  try {
+    if (product.available_sizes) {
+      sizes = typeof product.available_sizes === 'string' ? JSON.parse(product.available_sizes) : product.available_sizes;
+    }
+  } catch { sizes = []; }
+  try {
+    if (product.available_colors) {
+      colors = typeof product.available_colors === 'string' ? JSON.parse(product.available_colors) : product.available_colors;
+    }
+  } catch { colors = []; }
+
+  // Inquiry links
+  const whatsappMessage = encodeURIComponent(
+    `Hi! I'm interested in "${product.name}" (${formatPrice(product.price)}). Could you share more details?`
+  );
+  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER.replace(/[^0-9]/g, '')}?text=${whatsappMessage}`;
+
+  const emailSubject = encodeURIComponent(`Inquiry about ${product.name}`);
+  const emailBody = encodeURIComponent(
+    `Hi BajraGuru,\n\nI'm interested in "${product.name}" priced at ${formatPrice(product.price)}.\n\nCould you please share more details?\n\nThank you!`
+  );
+  const emailUrl = `mailto:${EMAIL}?subject=${emailSubject}&body=${emailBody}`;
 
   return (
     <section className="bg-offwhite py-12 md:py-20">
@@ -202,52 +218,71 @@ export default function ProductDetail() {
             {/* Stock status */}
             <div className="mt-6">
               {product.in_stock ? (
-                <span className="flex items-center gap-1.5 font-body text-sm text-sage-dark">
-                  <Check size={16} /> In Stock
+                <span className="inline-flex items-center gap-1.5 font-body text-sm text-sage-dark">
+                  <span className="h-2 w-2 rounded-full bg-sage-dark" />
+                  In Stock
                 </span>
               ) : (
-                <span className="font-body text-sm text-terracotta">Out of Stock</span>
+                <span className="inline-flex items-center gap-1.5 font-body text-sm text-terracotta">
+                  <span className="h-2 w-2 rounded-full bg-terracotta" />
+                  Out of Stock
+                </span>
               )}
             </div>
 
-            {/* Quantity + Add to Cart */}
-            <div className="mt-8 flex flex-wrap items-center gap-4">
-              <div className="flex items-center rounded-full border border-sage-light/50 bg-white">
-                <button
-                  onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                  className="flex h-12 w-12 items-center justify-center text-charcoal transition-colors hover:text-sage-dark"
-                >
-                  <Minus size={16} />
-                </button>
-                <span className="w-10 text-center font-body text-sm font-medium text-charcoal">
-                  {quantity}
-                </span>
-                <button
-                  onClick={() => setQuantity((q) => q + 1)}
-                  className="flex h-12 w-12 items-center justify-center text-charcoal transition-colors hover:text-sage-dark"
-                >
-                  <Plus size={16} />
-                </button>
+            {/* Available Sizes */}
+            {sizes.length > 0 && (
+              <div className="mt-6">
+                <h3 className="mb-2 font-body text-sm font-medium text-charcoal">Available Sizes</h3>
+                <div className="flex flex-wrap gap-2">
+                  {sizes.map((size, i) => (
+                    <span
+                      key={i}
+                      className="rounded-full border border-sage-light/50 bg-white px-4 py-1.5 font-body text-sm text-charcoal"
+                    >
+                      {size}
+                    </span>
+                  ))}
+                </div>
               </div>
+            )}
 
-              <Button
-                size="lg"
-                onClick={handleAddToCart}
-                disabled={!product.in_stock}
-                className="flex-1 sm:flex-initial"
+            {/* Available Colors */}
+            {colors.length > 0 && (
+              <div className="mt-6">
+                <h3 className="mb-2 font-body text-sm font-medium text-charcoal">Available Colors</h3>
+                <div className="flex flex-wrap gap-3">
+                  {colors.map((color, i) => (
+                    <div key={i} className="flex items-center gap-2">
+                      <span
+                        className="h-6 w-6 rounded-full border border-sand"
+                        style={{ backgroundColor: color.hex }}
+                      />
+                      <span className="font-body text-sm text-warm-gray">{color.name}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Inquiry Buttons */}
+            <div className="mt-8 flex flex-wrap gap-4">
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-1 items-center justify-center gap-2 rounded-full bg-sage px-6 py-3.5 font-body text-sm font-medium text-white transition-colors hover:bg-sage-dark sm:flex-initial"
               >
-                {added ? (
-                  <>
-                    <Check size={18} className="mr-2" />
-                    Added!
-                  </>
-                ) : (
-                  <>
-                    <ShoppingBag size={18} className="mr-2" />
-                    Add to Cart
-                  </>
-                )}
-              </Button>
+                <MessageCircle size={18} />
+                Inquire on WhatsApp
+              </a>
+              <a
+                href={emailUrl}
+                className="flex flex-1 items-center justify-center gap-2 rounded-full border-2 border-sage bg-white px-6 py-3.5 font-body text-sm font-medium text-sage-dark transition-colors hover:bg-sage/5 sm:flex-initial"
+              >
+                <Mail size={18} />
+                Email Inquiry
+              </a>
             </div>
           </div>
         </div>
@@ -262,7 +297,7 @@ export default function ProductDetail() {
               {relatedProducts.map((p) => (
                 <ProductCard
                   key={p.id}
-                  product={{ ...p, _id: p.id, images: p.image_url ? [{ url: p.image_url }] : [] }}
+                  product={{ ...p, images: p.image_url ? [{ url: p.image_url }] : [] }}
                 />
               ))}
             </div>

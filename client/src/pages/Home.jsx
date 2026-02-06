@@ -1,7 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, Leaf, Heart, Shield, Star } from 'lucide-react';
+import { ArrowRight, Leaf, Heart, Shield, Star, Palette, BookOpen, ShoppingBag } from 'lucide-react';
 import { Canvas } from '@react-three/fiber';
 import { useProducts } from '../hooks/useProducts';
 import ProductCard from '../components/common/ProductCard';
@@ -22,18 +22,42 @@ const fadeUp = {
 const values = [
   {
     icon: Leaf,
-    title: 'Ethically Sourced',
-    description: 'Every product is handcrafted by artisans using time-honored traditions and sustainable materials.',
+    title: 'Direct Manufacturing',
+    description: 'Our in-house production ensures the highest quality while supporting local artisans.',
   },
   {
     icon: Heart,
-    title: 'Mindful Living',
-    description: 'Curated to bring peace and intention into your daily rituals and sacred spaces.',
+    title: 'Customizable Options',
+    description: 'We offer unique customization to cater to individual spiritual practices and preferences.',
   },
   {
     icon: Shield,
     title: 'Authentic Craft',
     description: 'Directly sourced from Nepal and Tibet, ensuring genuine quality and cultural integrity.',
+  },
+];
+
+const services = [
+  {
+    icon: Palette,
+    title: 'Custom Creations',
+    description:
+      'Personalized, handcrafted spiritual items tailored to your needs. We also do customized Khada and decor.',
+    image: 'https://images.unsplash.com/photo-1600618528240-fb9fc964b853?w=600&q=80',
+  },
+  {
+    icon: BookOpen,
+    title: 'Ritual Items',
+    description:
+      'Authentic ritual items made under the guidance of monasteries to enhance your spiritual practices.',
+    image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=600&q=80',
+  },
+  {
+    icon: ShoppingBag,
+    title: 'Wholesale Services',
+    description:
+      'Exclusive wholesale pricing for businesses and retailers.',
+    image: 'https://images.unsplash.com/photo-1609710228159-0fa9bd7c0827?w=600&q=80',
   },
 ];
 
@@ -86,7 +110,8 @@ export default function Home() {
               </h1>
               <p className="mt-6 max-w-lg font-body text-lg leading-relaxed text-warm-gray">
                 Discover handcrafted Buddhist treasures — singing bowls, meditation essentials,
-                and ritual items sourced directly from the heart of Nepal and Tibet.
+                and ritual items sourced directly from the heart of Nepal and surrounding regions.
+                Bajraguru is dedicated to preserving and sharing the beauty of Buddhist culture through high-quality, authentic items.
               </p>
               <div className="mt-8 flex flex-wrap gap-4">
                 <Link to="/shop">
@@ -162,6 +187,72 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Our Services */}
+      <section className="bg-sand py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-6">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-100px' }}
+            variants={fadeUp}
+            className="mb-12 text-center"
+          >
+            <span className="font-body text-xs font-medium uppercase tracking-[0.3em] text-sage-dark">
+              What We Offer
+            </span>
+            <h2 className="mt-3 font-heading text-4xl font-bold text-charcoal md:text-5xl">
+              Our Services
+            </h2>
+          </motion.div>
+
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-100px' }}
+            className="grid gap-8 md:grid-cols-3"
+          >
+            {services.map((service, i) => (
+              <motion.div
+                key={service.title}
+                variants={fadeUp}
+                custom={i}
+                className="group relative overflow-hidden rounded-2xl bg-white shadow-sm transition-shadow hover:shadow-lg"
+              >
+                {/* Hover image */}
+                <div className="relative h-48 overflow-hidden">
+                  <img
+                    src={service.image}
+                    alt={service.title}
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-charcoal/20 transition-opacity duration-300 group-hover:opacity-0" />
+                </div>
+
+                {/* Content */}
+                <div className="p-8">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-sage/10">
+                    <service.icon size={22} className="text-sage-dark" strokeWidth={1.5} />
+                  </div>
+                  <h3 className="mt-4 font-heading text-xl font-semibold text-charcoal">
+                    {service.title}
+                  </h3>
+                  <p className="mt-3 font-body text-sm leading-relaxed text-warm-gray">
+                    {service.description}
+                  </p>
+                  <Link
+                    to="/services"
+                    className="mt-5 inline-flex items-center gap-1.5 font-body text-sm font-medium text-sage-dark transition-colors hover:text-sage"
+                  >
+                    Learn More
+                    <ArrowRight size={14} />
+                  </Link>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
       {/* Featured Products */}
       <section className="bg-offwhite py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6">
@@ -187,7 +278,7 @@ export default function Home() {
               {products.map((product) => (
                 <ProductCard
                   key={product.id}
-                  product={{ ...product, _id: product.id, images: product.image_url ? [{ url: product.image_url }] : [] }}
+                  product={{ ...product, images: product.image_url ? [{ url: product.image_url }] : [] }}
                 />
               ))}
             </div>

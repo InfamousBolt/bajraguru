@@ -192,7 +192,7 @@ export default function Shop() {
                 {products.map((product) => (
                   <ProductCard
                     key={product.id}
-                    product={{ ...product, _id: product.id, images: product.image_url ? [{ url: product.image_url }] : [] }}
+                    product={{ ...product, images: product.image_url ? [{ url: product.image_url }] : [] }}
                   />
                 ))}
               </motion.div>

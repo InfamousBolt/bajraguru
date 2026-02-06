@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { Search, ShoppingBag, Menu, X } from 'lucide-react';
+import { Search, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useCart } from '../../hooks/useCart';
 
 const navLinks = [
+  { to: '/', label: 'Home' },
   { to: '/shop', label: 'Shop' },
+  { to: '/services', label: 'Services' },
   { to: '/about', label: 'About' },
   { to: '/contact', label: 'Contact' },
 ];
@@ -13,8 +14,6 @@ const navLinks = [
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { cartCount } = useCart();
-
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
@@ -36,7 +35,7 @@ export default function Navbar() {
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
           <img src="/bajraguru_logo.png" alt="BajraGuru" className="h-10 w-10 rounded-full" />
-          <span className="font-heading text-2xl font-semibold tracking-wide text-charcoal">BajraGuru</span>
+          <span className="font-heading text-2xl font-semibold tracking-wide text-charcoal">Bajraguru- The Buddhist Shop</span>
         </Link>
 
         {/* Desktop nav links */}
@@ -45,6 +44,7 @@ export default function Navbar() {
             <li key={link.to}>
               <NavLink
                 to={link.to}
+                end={link.to === '/'}
                 className={({ isActive }) =>
                   `font-body text-sm tracking-widest uppercase transition-colors duration-200 ${
                     isActive
@@ -67,19 +67,6 @@ export default function Navbar() {
           >
             <Search size={20} strokeWidth={1.5} />
           </button>
-
-          <Link
-            to="/cart"
-            className="relative text-charcoal transition-colors hover:text-sage-dark"
-            aria-label="Cart"
-          >
-            <ShoppingBag size={20} strokeWidth={1.5} />
-            {cartCount > 0 && (
-              <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-sage text-[10px] font-semibold text-white">
-                {cartCount > 99 ? '99+' : cartCount}
-              </span>
-            )}
-          </Link>
 
           {/* Mobile hamburger */}
           <button
@@ -107,6 +94,7 @@ export default function Navbar() {
                 <li key={link.to}>
                   <NavLink
                     to={link.to}
+                    end={link.to === '/'}
                     onClick={closeMobile}
                     className={({ isActive }) =>
                       `block rounded-lg px-4 py-3 font-body text-sm tracking-widest uppercase transition-colors ${

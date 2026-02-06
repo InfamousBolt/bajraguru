@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Upload, X, LogOut } from 'lucide-react';
+import { ArrowLeft, Upload, X, LogOut, Plus } from 'lucide-react';
 import { useProduct, useCreateProduct, useUpdateProduct } from '../../hooks/useProducts';
 import { productApi } from '../../services/api';
 import { useAuth } from '../../hooks/useAuth';
@@ -34,11 +34,20 @@ export default function AdminProductForm() {
     featured: false,
     in_stock: true,
     popularity_score: 0,
+    available_sizes: [],
+    available_colors: [],
   });
   const [images, setImages] = useState([]);
   const [existingImages, setExistingImages] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
+
+  // Sizes input state
+  const [newSize, setNewSize] = useState('');
+
+  // Colors input state
+  const [newColorName, setNewColorName] = useState('');
+  const [newColorHex, setNewColorHex] = useState('#9DB4A0');
 
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
@@ -49,6 +58,11 @@ export default function AdminProductForm() {
   useEffect(() => {
     if (isEditing && productData?.product) {
       const p = productData.product;
+      let parsedSizes = [];
+      let parsedColors = [];
+      try { parsedSizes = p.available_sizes ? JSON.parse(p.available_sizes) : []; } catch { parsedSizes = []; }
+      try { parsedColors = p.available_colors ? JSON.parse(p.available_colors) : []; } catch { parsedColors = []; }
+
       setForm({
         name: p.name,
         description: p.description,
@@ -57,6 +71,8 @@ export default function AdminProductForm() {
         featured: Boolean(p.featured),
         in_stock: Boolean(p.in_stock),
         popularity_score: p.popularity_score || 0,
+        available_sizes: parsedSizes,
+        available_colors: parsedColors,
       });
       setExistingImages(p.images || []);
     }
@@ -93,23 +109,62 @@ export default function AdminProductForm() {
     }
   };
 
+  // Size handlers
+  const addSize = () => {
+    const trimmed = newSize.trim();
+    if (trimmed && !form.available_sizes.includes(trimmed)) {
+      setForm((prev) => ({ ...prev, available_sizes: [...prev.available_sizes, trimmed] }));
+      setNewSize('');
+    }
+  };
+
+  const handleSizeKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      addSize();
+    }
+  };
+
+  const removeSize = (index) => {
+    setForm((prev) => ({ ...prev, available_sizes: prev.available_sizes.filter((_, i) => i !== index) }));
+  };
+
+  // Color handlers
+  const addColor = () => {
+    const trimmedName = newColorName.trim();
+    if (trimmedName) {
+      setForm((prev) => ({
+        ...prev,
+        available_colors: [...prev.available_colors, { name: trimmedName, hex: newColorHex }],
+      }));
+      setNewColorName('');
+      setNewColorHex('#9DB4A0');
+    }
+  };
+
+  const removeColor = (index) => {
+    setForm((prev) => ({ ...prev, available_colors: prev.available_colors.filter((_, i) => i !== index) }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
-    const productData = {
+    const productPayload = {
       ...form,
       price: parseFloat(form.price),
       popularity_score: parseInt(form.popularity_score, 10) || 0,
+      available_sizes: JSON.stringify(form.available_sizes),
+      available_colors: JSON.stringify(form.available_colors),
     };
 
     try {
       let productId = id;
 
       if (isEditing) {
-        await updateProduct.mutateAsync({ id, data: productData });
+        await updateProduct.mutateAsync({ id, data: productPayload });
       } else {
-        const result = await createProduct.mutateAsync(productData);
+        const result = await createProduct.mutateAsync(productPayload);
         productId = result.product.id;
       }
 
@@ -272,6 +327,102 @@ export default function AdminProductForm() {
                   <span className="font-body text-sm text-charcoal">In Stock</span>
                 </label>
               </div>
+            </div>
+          </div>
+
+          {/* Sizes & Colors */}
+          <div className="rounded-2xl bg-white p-8 shadow-sm">
+            <h3 className="mb-5 font-heading text-lg font-semibold text-charcoal">
+              Variants
+            </h3>
+
+            {/* Sizes */}
+            <div className="mb-6">
+              <label className="mb-1.5 block font-body text-sm font-medium text-charcoal">
+                Available Sizes
+              </label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={newSize}
+                  onChange={(e) => setNewSize(e.target.value)}
+                  onKeyDown={handleSizeKeyDown}
+                  placeholder='e.g. Small, Medium, 6"...'
+                  className="flex-1 rounded-xl border border-sage-light/50 bg-offwhite px-4 py-2.5 font-body text-sm text-charcoal outline-none focus:border-sage focus:ring-2 focus:ring-sage/20"
+                />
+                <button
+                  type="button"
+                  onClick={addSize}
+                  className="flex items-center gap-1 rounded-xl bg-sage/10 px-4 py-2.5 font-body text-sm font-medium text-sage-dark transition-colors hover:bg-sage/20"
+                >
+                  <Plus size={14} />
+                  Add
+                </button>
+              </div>
+              {form.available_sizes.length > 0 && (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {form.available_sizes.map((size, i) => (
+                    <span
+                      key={i}
+                      className="flex items-center gap-1.5 rounded-full border border-sage-light/50 bg-offwhite px-3 py-1.5 font-body text-sm text-charcoal"
+                    >
+                      {size}
+                      <button type="button" onClick={() => removeSize(i)} className="text-warm-gray hover:text-terracotta">
+                        <X size={14} />
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Colors */}
+            <div>
+              <label className="mb-1.5 block font-body text-sm font-medium text-charcoal">
+                Available Colors
+              </label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={newColorName}
+                  onChange={(e) => setNewColorName(e.target.value)}
+                  placeholder="Color name..."
+                  className="flex-1 rounded-xl border border-sage-light/50 bg-offwhite px-4 py-2.5 font-body text-sm text-charcoal outline-none focus:border-sage focus:ring-2 focus:ring-sage/20"
+                />
+                <input
+                  type="color"
+                  value={newColorHex}
+                  onChange={(e) => setNewColorHex(e.target.value)}
+                  className="h-10 w-10 cursor-pointer rounded-lg border border-sage-light/50"
+                />
+                <button
+                  type="button"
+                  onClick={addColor}
+                  className="flex items-center gap-1 rounded-xl bg-sage/10 px-4 py-2.5 font-body text-sm font-medium text-sage-dark transition-colors hover:bg-sage/20"
+                >
+                  <Plus size={14} />
+                  Add
+                </button>
+              </div>
+              {form.available_colors.length > 0 && (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {form.available_colors.map((color, i) => (
+                    <span
+                      key={i}
+                      className="flex items-center gap-2 rounded-full border border-sage-light/50 bg-offwhite px-3 py-1.5 font-body text-sm text-charcoal"
+                    >
+                      <span
+                        className="h-4 w-4 rounded-full border border-sand"
+                        style={{ backgroundColor: color.hex }}
+                      />
+                      {color.name}
+                      <button type="button" onClick={() => removeColor(i)} className="text-warm-gray hover:text-terracotta">
+                        <X size={14} />
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
