@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const uuidv4 = () => crypto.randomUUID();
 const { getDb } = require('../db');
 const { processImage, deleteImageFiles, deleteProductImageDir } = require('../services/imageService');
+const { validateMagicBytes } = require('../middleware/upload');
 
 /**
  * GET /api/products
@@ -288,6 +289,13 @@ async function uploadImages(req, res) {
 
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({ error: 'No files uploaded.' });
+    }
+
+    // Validate magic bytes for each file
+    for (const file of req.files) {
+      if (!validateMagicBytes(file.buffer)) {
+        return res.status(400).json({ error: `File "${file.originalname}" is not a valid image.` });
+      }
     }
 
     // Get current max display_order for this product

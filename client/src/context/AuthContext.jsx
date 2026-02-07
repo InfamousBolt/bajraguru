@@ -1,29 +1,20 @@
 import { createContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { authApi } from '../services/api';
 
-const TOKEN_KEY = 'adminToken';
-
 export const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // Verify existing token on mount
+  // Verify existing cookie on mount
   useEffect(() => {
-    const token = localStorage.getItem(TOKEN_KEY);
-    if (!token) {
-      setLoading(false);
-      return;
-    }
-
     authApi
       .verify()
       .then(() => {
         setIsAuthenticated(true);
       })
       .catch(() => {
-        localStorage.removeItem(TOKEN_KEY);
         setIsAuthenticated(false);
       })
       .finally(() => {
@@ -33,13 +24,12 @@ export function AuthProvider({ children }) {
 
   const login = useCallback(async (password) => {
     const data = await authApi.login(password);
-    localStorage.setItem(TOKEN_KEY, data.token);
     setIsAuthenticated(true);
     return data;
   }, []);
 
-  const logout = useCallback(() => {
-    localStorage.removeItem(TOKEN_KEY);
+  const logout = useCallback(async () => {
+    await authApi.logout().catch(() => {});
     setIsAuthenticated(false);
   }, []);
 

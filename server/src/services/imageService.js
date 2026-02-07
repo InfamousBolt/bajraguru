@@ -61,7 +61,13 @@ function deleteImageFiles(imageUrl) {
   try {
     // Resolve the original file path
     const relativePath = imageUrl.replace(/^\/uploads\//, '');
-    const absolutePath = path.join(UPLOAD_DIR, relativePath);
+    const absolutePath = path.resolve(UPLOAD_DIR, relativePath);
+
+    // Guard against path traversal — resolved path must stay inside UPLOAD_DIR
+    if (!absolutePath.startsWith(path.resolve(UPLOAD_DIR) + path.sep)) {
+      console.error('Path traversal blocked:', imageUrl);
+      return;
+    }
 
     if (fs.existsSync(absolutePath)) {
       fs.unlinkSync(absolutePath);
@@ -88,7 +94,13 @@ function deleteImageFiles(imageUrl) {
  */
 function deleteProductImageDir(productId) {
   try {
-    const productDir = path.join(UPLOAD_DIR, 'products', productId);
+    const productDir = path.resolve(UPLOAD_DIR, 'products', productId);
+
+    if (!productDir.startsWith(path.resolve(UPLOAD_DIR) + path.sep)) {
+      console.error('Path traversal blocked for product dir:', productId);
+      return;
+    }
+
     if (fs.existsSync(productDir)) {
       fs.rmSync(productDir, { recursive: true, force: true });
     }
