@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Package, MessageSquare, Star, LogOut, Plus } from 'lucide-react';
-import { useQuery } from '@tanstack/react-query';
+import { Package, MessageSquare, Star, LogOut, Plus, Trash2 } from 'lucide-react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../../hooks/useAuth';
 import { productApi, feedbackApi, contactApi } from '../../services/api';
 import Loading from '../../components/common/Loading';
@@ -9,6 +9,7 @@ import Loading from '../../components/common/Loading';
 export default function AdminDashboard() {
   const { isAuthenticated, loading: authLoading, logout } = useAuth();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
@@ -33,6 +34,19 @@ export default function AdminDashboard() {
     queryFn: () => contactApi.getAll(),
     enabled: isAuthenticated,
   });
+
+  const deleteFeedbackMutation = useMutation({
+    mutationFn: (id) => feedbackApi.delete(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-feedback'] });
+    },
+  });
+
+  const handleDeleteFeedback = (id, name) => {
+    if (window.confirm(`Delete review from "${name || 'Anonymous'}"?`)) {
+      deleteFeedbackMutation.mutate(id);
+    }
+  };
 
   if (authLoading) return <Loading size="lg" className="min-h-screen" />;
   if (!isAuthenticated) return null;
@@ -121,6 +135,59 @@ export default function AdminDashboard() {
               <p className="mt-3 font-body text-sm text-warm-gray">{stat.label}</p>
             </Link>
           ))}
+        </div>
+
+        {/* Reviews */}
+        <div className="mt-10">
+          <h2 className="font-heading text-xl font-semibold text-charcoal">Reviews</h2>
+          <div className="mt-4 rounded-2xl bg-white shadow-sm">
+            {feedbackLoading ? (
+              <Loading className="py-10" />
+            ) : (feedbackData?.feedback || []).length === 0 ? (
+              <p className="px-6 py-10 text-center font-body text-sm text-warm-gray">
+                No reviews yet.
+              </p>
+            ) : (
+              <div className="divide-y divide-sand">
+                {(feedbackData?.feedback || []).map((review) => (
+                  <div key={review.id} className="flex items-start justify-between px-6 py-4">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-3">
+                        <p className="font-body text-sm font-semibold text-charcoal">
+                          {review.name || 'Anonymous'}
+                        </p>
+                        {review.rating && (
+                          <div className="flex items-center gap-0.5">
+                            {Array.from({ length: 5 }).map((_, i) => (
+                              <Star
+                                key={i}
+                                size={12}
+                                className={i < review.rating ? 'fill-gold text-gold' : 'text-sand'}
+                              />
+                            ))}
+                          </div>
+                        )}
+                        <p className="font-body text-xs text-warm-gray">
+                          {new Date(review.created_at).toLocaleDateString()}
+                        </p>
+                      </div>
+                      <p className="mt-1 font-body text-sm text-warm-gray line-clamp-2">
+                        {review.message}
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => handleDeleteFeedback(review.id, review.name)}
+                      disabled={deleteFeedbackMutation.isPending}
+                      className="ml-4 flex-shrink-0 rounded-lg p-2 text-warm-gray transition-colors hover:bg-red-50 hover:text-red-500 disabled:opacity-50"
+                      title="Delete review"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Recent Contact Messages */}

@@ -52,7 +52,30 @@ function create(req, res) {
   }
 }
 
+/**
+ * DELETE /api/feedback/:id
+ * Remove a feedback entry (admin only).
+ */
+function remove(req, res) {
+  try {
+    const db = getDb();
+    const { id } = req.params;
+
+    const existing = db.prepare('SELECT id FROM feedback WHERE id = ?').get(id);
+    if (!existing) {
+      return res.status(404).json({ error: 'Feedback not found.' });
+    }
+
+    db.prepare('DELETE FROM feedback WHERE id = ?').run(id);
+    return res.json({ message: 'Feedback deleted successfully.' });
+  } catch (err) {
+    console.error('Error deleting feedback:', err);
+    return res.status(500).json({ error: 'Internal server error.' });
+  }
+}
+
 module.exports = {
   getAll,
   create,
+  remove,
 };

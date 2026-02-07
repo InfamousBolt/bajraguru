@@ -149,21 +149,24 @@ export default function Contact() {
           >
             <div className="space-y-6">
               {[
-                { icon: Mail, title: 'Email', text: 'hello@bajraguru.com' },
+                { icon: Mail, title: 'Email', text: 'bajraguru.slg@gmail.com', href: 'mailto:bajraguru.slg@gmail.com?subject=Inquiry%20from%20BajraGuru%20Website' },
                 { icon: MapPin, title: 'Based in', text: 'Siliguri, West Bengal' },
                 { icon: Clock, title: 'Response Time', text: 'Within 24 hours' },
-              ].map((item) => (
-                <div key={item.title} className="flex gap-4 rounded-2xl bg-white p-6 shadow-sm">
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-sage/10">
-                    <item.icon size={20} className="text-sage-dark" strokeWidth={1.5} />
-                  </div>
-                  <div>
-                    <h4 className="font-body text-sm font-semibold text-charcoal">{item.title}</h4>
-                    <p className="mt-0.5 font-body text-sm text-warm-gray">{item.text}</p>
-                  </div>
-                  
-                </div>
-              ))}
+              ].map((item) => {
+                const Wrapper = item.href ? 'a' : 'div';
+                const wrapperProps = item.href ? { href: item.href, target: '_blank', rel: 'noopener noreferrer' } : {};
+                return (
+                  <Wrapper key={item.title} {...wrapperProps} className={`flex gap-4 rounded-2xl bg-white p-6 shadow-sm${item.href ? ' transition-shadow hover:shadow-md' : ''}`}>
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-sage/10">
+                      <item.icon size={20} className="text-sage-dark" strokeWidth={1.5} />
+                    </div>
+                    <div>
+                      <h4 className="font-body text-sm font-semibold text-charcoal">{item.title}</h4>
+                      <p className="mt-0.5 font-body text-sm text-warm-gray">{item.text}</p>
+                    </div>
+                  </Wrapper>
+                );
+              })}
 
               <a
                 href="https://wa.me/918777276407"

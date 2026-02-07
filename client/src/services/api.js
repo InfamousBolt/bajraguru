@@ -48,6 +48,7 @@ export const productApi = {
 export const feedbackApi = {
   getAll: () => api.get('/feedback').then((res) => res.data),
   create: (data) => api.post('/feedback', data).then((res) => res.data),
+  delete: (id) => api.delete(`/feedback/${id}`).then((res) => res.data),
 };
 
 // --- Contact APIs ---

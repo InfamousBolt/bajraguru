@@ -9,15 +9,12 @@ const quickLinks = [
 
 const customerCare = [
   { to: '/contact', label: 'Contact Us' },
-  { to: '/shop', label: 'Shipping & Returns' },
-  { to: '/shop', label: 'FAQs' },
 ];
 
 const socialLinks = [
-  { icon: Instagram, href: '#', label: 'Instagram' },
-  { icon: Facebook, href: '#', label: 'Facebook' },
-  { icon: Twitter, href: '#', label: 'Twitter' },
-  { icon: Mail, href: 'mailto:hello@bajraguru.com', label: 'Email' },
+  
+  { icon: Facebook, href: 'https://www.facebook.com/share/17RiNGfFKT/', label: 'Facebook' },
+  { icon: Mail, href: 'mailto:bajraguru.slg@gmail.com', label: 'Email' },
 ];
 
 export default function Footer() {
@@ -30,7 +27,7 @@ export default function Footer() {
             <div className="flex items-center gap-2">
               <img src="/bajraguru_logo.png" alt="BajraGuru" className="h-10 w-10 rounded-full" />
               <h3 className="font-heading text-2xl font-semibold tracking-wide text-charcoal">
-                BajraGuru
+                Bajraguru
               </h3>
             </div>
             <p className="mt-3 font-body text-sm leading-relaxed text-warm-gray">
@@ -82,6 +79,8 @@ export default function Footer() {
                   key={label}
                   href={href}
                   aria-label={label}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex h-10 w-10 items-center justify-center rounded-full bg-sage/10 text-sage-dark transition-colors hover:bg-sage hover:text-white"
                 >
                   <Icon size={18} strokeWidth={1.5} />
@@ -89,7 +88,7 @@ export default function Footer() {
               ))}
             </div>
             <p className="mt-6 font-body text-sm text-warm-gray">
-              hello@bajraguru.com
+            bajraguru.slg@gmail.com
             </p>
           </div>
         </div>
@@ -97,7 +96,7 @@ export default function Footer() {
         {/* Copyright */}
         <div className="mt-14 border-t border-sage-light/40 pt-6 text-center">
           <p className="font-body text-xs tracking-wide text-warm-gray">
-            &copy; {new Date().getFullYear()} BajraGuru. All rights reserved.
+            &copy; {new Date().getFullYear()} Bajraguru. All rights reserved.
           </p>
         </div>
       </div>
