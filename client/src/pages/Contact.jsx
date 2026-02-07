@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Send, Mail, MapPin, Clock } from 'lucide-react';
+import { Send, Mail, MapPin, Clock, MessageCircle } from 'lucide-react';
 import { contactApi } from '../services/api';
 import Button from '../components/common/Button';
 
@@ -123,6 +123,10 @@ export default function Contact() {
                 </p>
               )}
 
+              <p className="mt-5 font-body text-xs text-warm-gray">
+                We do not store your email or personal details, and will never use them for marketing purposes. Your information is used solely to respond to your query.
+              </p>
+
               <div className="mt-6">
                 <Button type="submit" size="lg" disabled={submitting}>
                   {submitting ? 'Sending...' : (
@@ -146,7 +150,7 @@ export default function Contact() {
             <div className="space-y-6">
               {[
                 { icon: Mail, title: 'Email', text: 'hello@bajraguru.com' },
-                { icon: MapPin, title: 'Based in', text: 'Kathmandu, Nepal' },
+                { icon: MapPin, title: 'Based in', text: 'Siliguri, West Bengal' },
                 { icon: Clock, title: 'Response Time', text: 'Within 24 hours' },
               ].map((item) => (
                 <div key={item.title} className="flex gap-4 rounded-2xl bg-white p-6 shadow-sm">
@@ -157,8 +161,24 @@ export default function Contact() {
                     <h4 className="font-body text-sm font-semibold text-charcoal">{item.title}</h4>
                     <p className="mt-0.5 font-body text-sm text-warm-gray">{item.text}</p>
                   </div>
+                  
                 </div>
               ))}
+
+              <a
+                href="https://wa.me/918777276407"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex gap-4 rounded-2xl bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
+              >
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-sage/10">
+                  <MessageCircle size={20} className="text-green-600" strokeWidth={1.5} />
+                </div>
+                <div>
+                  <h4 className="font-body text-sm font-semibold text-charcoal">WhatsApp</h4>
+                  <p className="mt-0.5 font-body text-sm text-warm-gray">+91 87772 76407</p>
+                </div>
+              </a>
             </div>
           </motion.div>
         </div>

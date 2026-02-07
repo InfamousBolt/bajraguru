@@ -1,6 +1,16 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Button from '../components/common/Button';
+import CustomizedItem from '../../public/images/customized_item.png';
+import CustomizedDiya from '../../public/images/customized_diya.png';
+import CustomizedFlag from '../../public/images/customized_flag.png';
+import RitualOne from '../../public/images/ritual_one.png';
+import RitualTwo from '../../public/images/ritual_two.png';
+import RitualThree from '../../public/images/ritual_three.png';
+import WholesaleOne from '../../public/images/wholesale_one.png';
+import WholesaleTwo from '../../public/images/wholesale_two.png';
+import WholesaleItem from '../../public/images/wholesale_item.png';
+import ServicesFooter from '../../public/images/services_footer.png';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -18,9 +28,9 @@ const services = [
       'Our custom creations allow you to design unique spiritual items that reflect your personal practice and beliefs, ensuring each piece is meaningful.',
     tagline: 'Personalized, handcrafted spiritual items tailored to your needs.',
     images: [
-      'https://images.unsplash.com/photo-1567591370504-80152f6b0845?w=600&q=80',
-      'https://images.unsplash.com/photo-1609710228159-0fa9bd7c0827?w=600&q=80',
-      'https://images.unsplash.com/photo-1545467401-6bafecf30a3c?w=600&q=80',
+      CustomizedFlag,
+      CustomizedDiya,
+      CustomizedItem,
     ],
   },
   {
@@ -29,9 +39,9 @@ const services = [
       'Explore our extensive collection of ritual items, including prayer flags, prayer wheels and butterlamps, designed to elevate your spiritual experience with genuine resources.',
     tagline: 'Authentic ritual items to enhance your spiritual practices.',
     images: [
-      'https://images.unsplash.com/photo-1600618528240-fb9fc964b853?w=600&q=80',
-      'https://images.unsplash.com/photo-1514539079130-25950c84af65?w=600&q=80',
-      'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=600&q=80',
+      RitualOne,
+      RitualTwo,
+      RitualThree,
     ],
   },
   {
@@ -40,9 +50,9 @@ const services = [
       'We offer competitive wholesale options for retailers looking to stock authentic Buddhist items, providing quality products that resonate with your customers.',
     tagline: 'Exclusive wholesale pricing for businesses and retailers.',
     images: [
-      'https://images.unsplash.com/photo-1602532305019-3dbbd482dae0?w=600&q=80',
-      'https://images.unsplash.com/photo-1563201515-adbe35c669c5?w=600&q=80',
-      'https://images.unsplash.com/photo-1544027993-37dbfe43562a?w=600&q=80',
+      WholesaleTwo,
+      WholesaleOne,
+      WholesaleItem,
     ],
   },
 ];
@@ -166,8 +176,7 @@ export default function Services() {
         <div
           className="absolute inset-0 bg-cover bg-center opacity-30"
           style={{
-            backgroundImage:
-              'url(https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1400&q=80)',
+            backgroundImage: `url(${ServicesFooter})`
           }}
         />
         <div className="absolute inset-0 bg-charcoal/60" />

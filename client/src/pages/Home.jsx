@@ -8,6 +8,10 @@ import ProductCard from '../components/common/ProductCard';
 import Button from '../components/common/Button';
 import Loading from '../components/common/Loading';
 
+import CustomizedItem from '../../public/images/customized_item.png';
+import RitualItem from '../../public/images/ritual_item.png';
+import WholesaleItem from '../../public/images/wholesale_item.png';
+
 const HeroScene = lazy(() => import('../components/HeroScene'));
 
 const fadeUp = {
@@ -33,7 +37,7 @@ const values = [
   {
     icon: Shield,
     title: 'Authentic Craft',
-    description: 'Directly sourced from Nepal and Tibet, ensuring genuine quality and cultural integrity.',
+    description: 'Directly sourced locally from Kalimpong, ensuring genuine quality and cultural integrity.',
   },
 ];
 
@@ -42,22 +46,22 @@ const services = [
     icon: Palette,
     title: 'Custom Creations',
     description:
-      'Personalized, handcrafted spiritual items tailored to your needs. We also do customized Khada and decor.',
-    image: 'https://images.unsplash.com/photo-1600618528240-fb9fc964b853?w=600&q=80',
+      'Personalized, handcrafted spiritual items tailored to your needs. We also do customized Khada, printing and decor.',
+    image: CustomizedItem,
   },
   {
     icon: BookOpen,
     title: 'Ritual Items',
     description:
       'Authentic ritual items made under the guidance of monasteries to enhance your spiritual practices.',
-    image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=600&q=80',
+    image: RitualItem,
   },
   {
     icon: ShoppingBag,
     title: 'Wholesale Services',
     description:
       'Exclusive wholesale pricing for businesses and retailers.',
-    image: 'https://images.unsplash.com/photo-1609710228159-0fa9bd7c0827?w=600&q=80',
+    image: WholesaleItem,
   },
 ];
 
@@ -110,7 +114,7 @@ export default function Home() {
               </h1>
               <p className="mt-6 max-w-lg font-body text-lg leading-relaxed text-warm-gray">
                 Discover handcrafted Buddhist treasures — singing bowls, meditation essentials,
-                and ritual items sourced directly from the heart of Nepal and surrounding regions.
+                and ritual items sourced locally. Made with love under the guidance of respectful monks and monasteries,
                 Bajraguru is dedicated to preserving and sharing the beauty of Buddhist culture through high-quality, authentic items.
               </p>
               <div className="mt-8 flex flex-wrap gap-4">
@@ -157,8 +161,35 @@ export default function Home() {
       </section>
 
       {/* Value Props */}
-      <section className="bg-offwhite py-20 md:py-28">
-        <div className="mx-auto max-w-7xl px-6">
+      <section className="relative bg-offwhite py-20 md:py-28 overflow-hidden">
+        {/* Incense sticks — from bottom-left corner, tips reach above second card */}
+        <div className="pointer-events-none absolute bottom-0 left-0  hidden h-full w-[60%] opacity-[0.5] md:block">
+          <svg viewBox="0 0 600 400" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-full w-full" preserveAspectRatio="none">
+            {/* Stick 1 — tip at (410, 55) */}
+            {/* Smoke wisps */}
+            <path d="M410 50C405 20 414 -15 408 -50C402 -85 412 -115 406 -150" stroke="#6B8F6E" strokeWidth="2" strokeLinecap="round" opacity="0.7">
+              <animate attributeName="d" dur="4s" repeatCount="indefinite" values="M410 50C405 20 414 -15 408 -50C402 -85 412 -115 406 -150;M410 50C416 18 404 -18 412 -55C420 -88 406 -118 414 -155;M410 50C405 20 414 -15 408 -50C402 -85 412 -115 406 -150" />
+            </path>
+            <path d="M413 48C410 15 418 -20 414 -58C410 -95 418 -125 414 -165" stroke="#6B8F6E" strokeWidth="1.5" strokeLinecap="round" opacity="0.45">
+              <animate attributeName="d" dur="3.5s" repeatCount="indefinite" values="M413 48C410 15 418 -20 414 -58C410 -95 418 -125 414 -165;M413 48C418 12 408 -24 416 -62C424 -98 412 -128 420 -168;M413 48C410 15 418 -20 414 -58C410 -95 418 -125 414 -165" />
+            </path>
+            {/* Stick body */}
+            <line x1="410" y1="55" x2="-20" y2="420" stroke="#8B6914" strokeWidth="3.5" strokeLinecap="round" />
+
+            {/* Stick 2 — tip at (390, 85) */}
+            {/* Smoke wisps */}
+            <path d="M390 80C385 48 394 15 388 -22C382 -58 392 -90 386 -130" stroke="#6B8F6E" strokeWidth="2" strokeLinecap="round" opacity="0.7">
+              <animate attributeName="d" dur="4.5s" repeatCount="indefinite" values="M390 80C385 48 394 15 388 -22C382 -58 392 -90 386 -130;M390 80C396 45 384 12 392 -25C400 -62 386 -92 394 -135;M390 80C385 48 394 15 388 -22C382 -58 392 -90 386 -130" />
+            </path>
+            <path d="M393 78C390 42 398 8 392 -32C388 -68 396 -100 392 -142" stroke="#6B8F6E" strokeWidth="1.5" strokeLinecap="round" opacity="0.45">
+              <animate attributeName="d" dur="3.8s" repeatCount="indefinite" values="M393 78C390 42 398 8 392 -32C388 -68 396 -100 392 -142;M393 78C398 40 388 5 396 -35C404 -72 390 -102 398 -145;M393 78C390 42 398 8 392 -32C388 -68 396 -100 392 -142" />
+            </path>
+            {/* Stick body */}
+            <line x1="390" y1="85" x2="-30" y2="430" stroke="#8B6914" strokeWidth="3.5" strokeLinecap="round" />
+          </svg>
+        </div>
+
+        <div className="relative mx-auto max-w-7xl px-6">
           <motion.div
             initial="hidden"
             whileInView="visible"

@@ -13,10 +13,11 @@ const fadeUp = {
 };
 
 const milestones = [
-  { icon: Heart, title: 'Our Mission', text: 'To bridge ancient Buddhist traditions with modern seekers, making sacred tools accessible to everyone on their spiritual path.' },
-  { icon: Globe, title: 'Direct Sourcing', text: 'We partner directly with artisan families in Nepal and Tibet, ensuring fair trade practices and cultural preservation.' },
-  { icon: Users, title: 'Community First', text: 'Every purchase supports local communities — funding education, preserving craftsmanship, and sustaining livelihoods.' },
-  { icon: Sparkles, title: 'Authenticity', text: 'Each item is handcrafted using centuries-old techniques, blessed in accordance with tradition, and verified for quality.' },
+  { icon: Heart, title: 'Our Mission', text: 'To provide authentic, high-quality ritual, cultural, and decorative items that resonate with the deep spiritual practices of Buddhism.' },
+  { icon: Globe, title: 'In-House Production', text: 'With our own manufacturing and printing units, we ensure authenticity and craftsmanship in every piece, offering unique and customizable options.' },
+  { icon: Users, title: 'Wholesale & Community', text: 'Since 1993, we have served both individuals and wholesale buyers with devotion and excellence, providing authentic and meaningful products.' },
+  { icon: Sparkles, title: 'Authenticity', text: 'We don\u2019t just curate items \u2014 we create them. This allows us to maintain the highest quality for spiritual practitioners, collectors, and retailers.' },
+  
 ];
 
 export default function About() {
@@ -31,14 +32,15 @@ export default function About() {
                 Our Story
               </span>
               <h1 className="mt-4 font-heading text-5xl font-bold leading-tight text-charcoal md:text-6xl">
-                Rooted in
+                A Commitment to
                 <br />
-                <span className="text-sage">Tradition</span>
+                <span className="text-sage">Authentic Traditions</span>
               </h1>
               <p className="mt-6 max-w-lg font-body text-lg leading-relaxed text-warm-gray">
-                BajraGuru was born from a deep reverence for Buddhist heritage and a desire to
-                share its transformative power with the world. We curate authentic, handcrafted
-                sacred items that honor centuries of spiritual tradition.
+                At Bajra Guru, we are more than a store &mdash; we are custodians of the rich
+                heritage and spirituality of Buddhist and Tibetan traditions. With our own
+                manufacturing and printing units, we ensure authenticity and craftsmanship
+                in every piece we offer.
               </p>
             </motion.div>
 
@@ -46,15 +48,25 @@ export default function About() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="hidden lg:block"
+              className="relative hidden h-[28rem] lg:block"
             >
-              <div className="aspect-[4/5] overflow-hidden rounded-3xl">
-                <img
-                  src="https://images.unsplash.com/photo-1609619385002-f40f1df827b8?w=800&q=80"
-                  alt="Buddhist meditation space"
-                  className="h-full w-full object-cover"
-                />
-              </div>
+              <p className="mb-10 font-heading text-4xl font-bold tracking-wide text-charcoal">
+                Bajraguru &ndash; The Buddhist Shop
+              </p>
+              <motion.img
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+                src="/bajraguru_logo.png"
+                alt="Bajraguru logo"
+                className="relative z-10 w-72 drop-shadow-lg"
+              />
+              <motion.img
+                animate={{ y: [0, -8, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+                src="/images/about.png"
+                alt="Eight Auspicious Symbols"
+                className="absolute right-16 top-36 z-20 w-52 drop-shadow-lg"
+              />
             </motion.div>
           </div>
         </div>
@@ -113,18 +125,18 @@ export default function About() {
             variants={fadeUp}
           >
             <h2 className="font-heading text-4xl font-bold text-charcoal md:text-5xl">
-              From Kathmandu to Your Home
+              Our Journey Through 30+ Years
             </h2>
             <p className="mt-6 font-body text-lg leading-relaxed text-warm-gray">
-              Our founder first visited the workshops of Patan, Nepal over a decade ago.
-              Watching master artisans hammer singing bowls by hand — each strike a meditation in itself —
-              sparked a vision: to share these sacred objects with seekers everywhere, while ensuring
-              the artisans who create them thrive.
+              Since 1993, Bajra Guru has been a trusted name in Tibetan cultural goods,
+              serving both individuals and wholesale buyers with devotion and excellence.
+              With over 30 years of dedicated experience, we have developed a profound
+              understanding of cultural and spiritual needs.
             </p>
             <p className="mt-4 font-body text-lg leading-relaxed text-warm-gray">
-              Today, BajraGuru works with over 30 artisan families across Nepal and Tibet.
-              Every product tells a story of devotion, craftsmanship, and cultural heritage that
-              spans centuries.
+              Explore the world of Buddhist spirituality and tradition at Bajra Guru. With our
+              in-house production capabilities and unparalleled selection, we invite you to
+              experience why we are a leading destination for Buddhist and Tibetan cultural goods.
             </p>
             <div className="mt-8">
               <Link to="/shop">

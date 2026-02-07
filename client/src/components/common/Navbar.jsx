@@ -61,12 +61,7 @@ export default function Navbar() {
 
         {/* Right icons */}
         <div className="flex items-center gap-4">
-          <button
-            aria-label="Search"
-            className="text-charcoal transition-colors hover:text-sage-dark"
-          >
-            <Search size={20} strokeWidth={1.5} />
-          </button>
+          
 
           {/* Mobile hamburger */}
           <button
