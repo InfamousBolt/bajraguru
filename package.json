@@ -5,7 +5,7 @@
   "main": "server/src/index.js",
   "scripts": {
     "build": "cd client && npm install --include=dev && npm run build",
-    "postinstall": "cd server && npm install",
+    "postinstall": "cd server && npm install && npm rebuild better-sqlite3",
     "start": "node server/src/index.js"
   },
   "dependencies": {
