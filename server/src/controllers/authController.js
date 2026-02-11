@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
 
 const COOKIE_NAME = 'token';
 const COOKIE_MAX_AGE = 24 * 60 * 60 * 1000; // 24h
@@ -19,7 +18,7 @@ function tokenCookieOptions() {
  * POST /api/auth/login
  * Authenticate admin with password, return JWT in httpOnly cookie.
  */
-async function login(req, res) {
+function login(req, res) {
   try {
     const { password } = req.body;
 
@@ -27,14 +26,13 @@ async function login(req, res) {
       return res.status(400).json({ error: 'Password is required.' });
     }
 
-    const hash = process.env.ADMIN_PASSWORD_HASH;
+    const adminPassword = process.env.ADMIN_PASSWORD;
 
-    if (!hash) {
+    if (!adminPassword) {
       return res.status(500).json({ error: 'Server configuration error.' });
     }
 
-    const match = await bcrypt.compare(password, hash);
-    if (!match) {
+    if (password !== adminPassword) {
       return res.status(401).json({ error: 'Invalid password.' });
     }
 
