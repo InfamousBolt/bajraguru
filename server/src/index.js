@@ -1,10 +1,15 @@
+const path = require('path');
+
+// Load .env from app root first; fall back to Hostinger's config location
 require('dotenv').config();
+if (!process.env.ADMIN_PASSWORD_HASH) {
+  require('dotenv').config({ path: path.resolve(__dirname, '../../.builds/config/.env') });
+}
 
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
-const path = require('path');
 const fs = require('fs');
 
 const { initializeDatabase, closeDatabase } = require('./db');
@@ -17,6 +22,9 @@ const authRoutes = require('./routes/auth');
 
 const app = express();
 const PORT = parseInt(process.env.PORT, 10) || 3001;
+
+// Trust first proxy (Hostinger / reverse proxy)
+app.set('trust proxy', 1);
 
 // ---------------------------------------------------------------------------
 // Middleware
@@ -49,6 +57,19 @@ app.use('/api/auth', authRoutes);
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
+
+// ---------------------------------------------------------------------------
+// Serve client SPA in production
+// ---------------------------------------------------------------------------
+if (process.env.NODE_ENV === 'production') {
+  const clientDist = path.resolve(__dirname, '../../client/dist');
+  app.use(express.static(clientDist));
+
+  // SPA fallback — serve index.html for any non-API, non-upload route
+  app.get('/{*splat}', (req, res) => {
+    res.sendFile(path.join(clientDist, 'index.html'));
+  });
+}
 
 // ---------------------------------------------------------------------------
 // Error handling

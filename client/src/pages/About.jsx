@@ -58,14 +58,16 @@ export default function About() {
                 transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
                 src="/bajraguru_logo.png"
                 alt="Bajraguru logo"
-                className="relative z-10 w-72 drop-shadow-lg"
+                loading="lazy"
+                className="relative z-10 w-48 drop-shadow-lg lg:w-72"
               />
               <motion.img
                 animate={{ y: [0, -8, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
                 src="/images/about.png"
                 alt="Eight Auspicious Symbols"
-                className="absolute right-16 top-36 z-20 w-52 drop-shadow-lg"
+                loading="lazy"
+                className="absolute right-4 top-36 z-20 w-40 drop-shadow-lg lg:right-16 lg:w-52"
               />
             </motion.div>
           </div>

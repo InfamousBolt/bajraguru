@@ -4,7 +4,8 @@ import { motion } from 'framer-motion';
 import { Search, SlidersHorizontal, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useProducts } from '../hooks/useProducts';
 import ProductCard from '../components/common/ProductCard';
-import Loading from '../components/common/Loading';
+import { ProductGridSkeleton } from '../components/common/Skeleton';
+import ErrorMessage from '../components/common/ErrorMessage';
 
 const categories = [
   { value: '', label: 'All Products' },
@@ -36,7 +37,7 @@ export default function Shop() {
     limit: '12',
   }), [searchParams]);
 
-  const { data, isLoading } = useProducts(params);
+  const { data, isLoading, isError, refetch } = useProducts(params);
   const products = data?.products || [];
   const pagination = data?.pagination || { page: 1, totalPages: 1, total: 0 };
 
@@ -169,7 +170,9 @@ export default function Shop() {
             )}
 
             {isLoading ? (
-              <Loading size="lg" className="py-20" />
+              <ProductGridSkeleton count={6} columns="sm:grid-cols-2 lg:grid-cols-3" />
+            ) : isError ? (
+              <ErrorMessage title="Couldn't load products" message="Please check your connection and try again." onRetry={refetch} />
             ) : products.length === 0 ? (
               <div className="py-20 text-center">
                 <p className="font-heading text-2xl text-charcoal">No products found</p>

@@ -5,6 +5,7 @@ import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/common/Navbar';
 import Footer from './components/common/Footer';
 import Loading from './components/common/Loading';
+import ErrorBoundary from './components/common/ErrorBoundary';
 
 // Public pages
 import Home from './pages/Home';
@@ -60,6 +61,7 @@ export default function App() {
       <AuthProvider>
           <BrowserRouter>
             <ScrollToTop />
+            <ErrorBoundary>
             <Routes>
               {/* Public routes */}
               <Route path="/" element={<Layout><Home /></Layout>} />
@@ -77,6 +79,7 @@ export default function App() {
               <Route path="/admin/products/new" element={<AdminRoute><AdminProductForm /></AdminRoute>} />
               <Route path="/admin/products/:id/edit" element={<AdminRoute><AdminProductForm /></AdminRoute>} />
             </Routes>
+            </ErrorBoundary>
           </BrowserRouter>
       </AuthProvider>
     </QueryClientProvider>

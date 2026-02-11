@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Button from '../components/common/Button';
+import LazyImage from '../components/common/LazyImage';
 import CustomizedItem from '../../public/images/customized_item.png';
 import CustomizedDiya from '../../public/images/customized_diya.png';
 import CustomizedFlag from '../../public/images/customized_flag.png';
@@ -59,27 +60,21 @@ const services = [
 
 function ImageGrid({ images, alt }) {
   return (
-    <div className="grid grid-cols-2 gap-3">
-      <div className="row-span-2 overflow-hidden rounded-xl">
-        <img
-          src={images[0]}
-          alt={`${alt} 1`}
-          className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
-        />
+    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+      <div className="sm:row-span-2 overflow-hidden rounded-xl group/img">
+        <div className="h-full w-full transition-transform duration-500 group-hover/img:scale-105">
+          <LazyImage src={images[0]} alt={`${alt} 1`} className="h-full w-full object-cover" />
+        </div>
       </div>
-      <div className="overflow-hidden rounded-xl">
-        <img
-          src={images[1]}
-          alt={`${alt} 2`}
-          className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
-        />
+      <div className="overflow-hidden rounded-xl group/img">
+        <div className="h-full w-full transition-transform duration-500 group-hover/img:scale-105">
+          <LazyImage src={images[1]} alt={`${alt} 2`} className="h-full w-full object-cover" />
+        </div>
       </div>
-      <div className="overflow-hidden rounded-xl">
-        <img
-          src={images[2]}
-          alt={`${alt} 3`}
-          className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
-        />
+      <div className="overflow-hidden rounded-xl group/img">
+        <div className="h-full w-full transition-transform duration-500 group-hover/img:scale-105">
+          <LazyImage src={images[2]} alt={`${alt} 3`} className="h-full w-full object-cover" />
+        </div>
       </div>
     </div>
   );
@@ -179,7 +174,7 @@ export default function Services() {
             backgroundImage: `url(${ServicesFooter})`
           }}
         />
-        <div className="absolute inset-0 bg-charcoal/60" />
+        <div className="absolute inset-0 bg-charcoal/70" />
         <div className="relative mx-auto max-w-3xl px-6 text-center">
           <motion.div
             initial="hidden"

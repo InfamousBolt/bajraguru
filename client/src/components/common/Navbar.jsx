@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const navLinks = [
   { to: '/', label: 'Home' },
-  { to: '/shop', label: 'Shop' },
+  { to: '/shop', label: 'Catalog' },
   { to: '/services', label: 'Services' },
   { to: '/about', label: 'About' },
   { to: '/contact', label: 'Contact' },
@@ -35,7 +35,10 @@ export default function Navbar() {
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
           <img src="/bajraguru_logo.png" alt="BajraGuru" className="h-10 w-10 rounded-full" />
-          <span className="font-heading text-2xl font-semibold tracking-wide text-charcoal">Bajraguru- The Buddhist Shop</span>
+          <span className="font-heading text-2xl font-semibold tracking-wide text-charcoal">
+            <span className="lg:hidden">Bajraguru</span>
+            <span className="hidden lg:inline">Bajraguru- The Buddhist Shop</span>
+          </span>
         </Link>
 
         {/* Desktop nav links */}

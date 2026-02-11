@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { formatPrice } from '../../utils/formatPrice';
+import LazyImage from './LazyImage';
 
 export default function ProductCard({ product }) {
-  const { id, name, price, category, images, available_colors } = product;
+  const { id, name, price, category, images, available_colors, available_sizes } = product;
   const imageUrl = images?.[0]?.url || '/placeholder.jpg';
 
   let colors = [];
@@ -14,6 +15,16 @@ export default function ProductCard({ product }) {
       colors = [];
     }
   }
+
+  // Check if any variant has a price increment
+  let hasIncrements = false;
+  try {
+    if (available_sizes) {
+      const rawSizes = typeof available_sizes === 'string' ? JSON.parse(available_sizes) : available_sizes;
+      if (rawSizes.some((s) => (typeof s === 'object' ? s.increment : 0) > 0)) hasIncrements = true;
+    }
+    if (colors.some((c) => (c.increment || 0) > 0)) hasIncrements = true;
+  } catch { /* ignore */ }
 
   return (
     <motion.div
@@ -27,13 +38,13 @@ export default function ProductCard({ product }) {
         <div className="overflow-hidden rounded-2xl bg-white shadow-sm transition-shadow duration-300 group-hover:shadow-lg">
           {/* Image */}
           <div className="relative aspect-[3/4] overflow-hidden bg-sand">
-            <motion.img
-              src={imageUrl}
-              alt={name}
-              className="h-full w-full object-cover"
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.5, ease: 'easeOut' }}
-            />
+            <div className="h-full w-full transition-transform duration-500 ease-out group-hover:scale-105">
+              <LazyImage
+                src={imageUrl}
+                alt={name}
+                className="h-full w-full object-cover"
+              />
+            </div>
 
             {/* Category badge */}
             {category && (
@@ -54,6 +65,7 @@ export default function ProductCard({ product }) {
               {name}
             </h3>
             <p className="mt-1 font-body text-sm font-medium text-warm-gray">
+              {hasIncrements && <span className="text-xs">From </span>}
               {formatPrice(price)}
             </p>
             {/* Color swatches */}

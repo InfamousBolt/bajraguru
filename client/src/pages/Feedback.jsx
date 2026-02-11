@@ -4,7 +4,8 @@ import { Star, Send } from 'lucide-react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { feedbackApi } from '../services/api';
 import Button from '../components/common/Button';
-import Loading from '../components/common/Loading';
+import { ReviewSkeleton } from '../components/common/Skeleton';
+import ErrorMessage from '../components/common/ErrorMessage';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -48,7 +49,7 @@ export default function Feedback() {
   const [form, setForm] = useState({ name: '', email: '', rating: 5, experience_type: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ['feedback'],
     queryFn: () => feedbackApi.getAll(),
   });
@@ -180,7 +181,9 @@ export default function Feedback() {
           {/* Reviews List */}
           <div className="lg:col-span-3">
             {isLoading ? (
-              <Loading size="lg" className="py-20" />
+              <ReviewSkeleton count={3} />
+            ) : isError ? (
+              <ErrorMessage title="Couldn't load reviews" message="Please check your connection and try again." onRetry={refetch} />
             ) : feedbackList.length === 0 ? (
               <div className="py-20 text-center">
                 <p className="font-heading text-2xl text-charcoal">No reviews yet</p>

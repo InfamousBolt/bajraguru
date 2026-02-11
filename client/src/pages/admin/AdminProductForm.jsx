@@ -4,6 +4,7 @@ import { ArrowLeft, Upload, X, LogOut, Plus } from 'lucide-react';
 import { useProduct, useCreateProduct, useUpdateProduct } from '../../hooks/useProducts';
 import { productApi } from '../../services/api';
 import { useAuth } from '../../hooks/useAuth';
+import { formatIncrement } from '../../utils/formatPrice';
 import Button from '../../components/common/Button';
 import Loading from '../../components/common/Loading';
 
@@ -44,10 +45,12 @@ export default function AdminProductForm() {
 
   // Sizes input state
   const [newSize, setNewSize] = useState('');
+  const [newSizeIncrement, setNewSizeIncrement] = useState('');
 
   // Colors input state
   const [newColorName, setNewColorName] = useState('');
   const [newColorHex, setNewColorHex] = useState('#9DB4A0');
+  const [newColorIncrement, setNewColorIncrement] = useState('');
 
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
@@ -60,8 +63,14 @@ export default function AdminProductForm() {
       const p = productData.product;
       let parsedSizes = [];
       let parsedColors = [];
-      try { parsedSizes = p.available_sizes ? JSON.parse(p.available_sizes) : []; } catch { parsedSizes = []; }
-      try { parsedColors = p.available_colors ? JSON.parse(p.available_colors) : []; } catch { parsedColors = []; }
+      try {
+        const raw = p.available_sizes ? JSON.parse(p.available_sizes) : [];
+        parsedSizes = raw.map((s) => typeof s === 'string' ? { label: s, increment: 0 } : { label: s.label, increment: s.increment || 0 });
+      } catch { parsedSizes = []; }
+      try {
+        const raw = p.available_colors ? JSON.parse(p.available_colors) : [];
+        parsedColors = raw.map((c) => ({ name: c.name, hex: c.hex, increment: c.increment || 0 }));
+      } catch { parsedColors = []; }
 
       setForm({
         name: p.name,
@@ -112,9 +121,13 @@ export default function AdminProductForm() {
   // Size handlers
   const addSize = () => {
     const trimmed = newSize.trim();
-    if (trimmed && !form.available_sizes.includes(trimmed)) {
-      setForm((prev) => ({ ...prev, available_sizes: [...prev.available_sizes, trimmed] }));
+    if (trimmed && !form.available_sizes.some((s) => s.label === trimmed)) {
+      setForm((prev) => ({
+        ...prev,
+        available_sizes: [...prev.available_sizes, { label: trimmed, increment: parseFloat(newSizeIncrement) || 0 }],
+      }));
       setNewSize('');
+      setNewSizeIncrement('');
     }
   };
 
@@ -135,10 +148,11 @@ export default function AdminProductForm() {
     if (trimmedName) {
       setForm((prev) => ({
         ...prev,
-        available_colors: [...prev.available_colors, { name: trimmedName, hex: newColorHex }],
+        available_colors: [...prev.available_colors, { name: trimmedName, hex: newColorHex, increment: parseFloat(newColorIncrement) || 0 }],
       }));
       setNewColorName('');
       setNewColorHex('#9DB4A0');
+      setNewColorIncrement('');
     }
   };
 
@@ -258,7 +272,7 @@ export default function AdminProductForm() {
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
                   <label className="mb-1.5 block font-body text-sm font-medium text-charcoal">
-                    Price ($) *
+                    Price (₹) *
                   </label>
                   <input
                     type="number"
@@ -350,6 +364,19 @@ export default function AdminProductForm() {
                   placeholder='e.g. Small, Medium, 6"...'
                   className="flex-1 rounded-xl border border-sage-light/50 bg-offwhite px-4 py-2.5 font-body text-sm text-charcoal outline-none focus:border-sage focus:ring-2 focus:ring-sage/20"
                 />
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 font-body text-xs text-warm-gray">₹+</span>
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={newSizeIncrement}
+                    onChange={(e) => setNewSizeIncrement(e.target.value)}
+                    onKeyDown={handleSizeKeyDown}
+                    placeholder="0"
+                    className="w-28 rounded-xl border border-sage-light/50 bg-offwhite py-2.5 pl-8 pr-3 font-body text-sm text-charcoal outline-none focus:border-sage focus:ring-2 focus:ring-sage/20"
+                  />
+                </div>
                 <button
                   type="button"
                   onClick={addSize}
@@ -366,7 +393,10 @@ export default function AdminProductForm() {
                       key={i}
                       className="flex items-center gap-1.5 rounded-full border border-sage-light/50 bg-offwhite px-3 py-1.5 font-body text-sm text-charcoal"
                     >
-                      {size}
+                      {size.label}
+                      {size.increment > 0 && (
+                        <span className="text-xs text-sage-dark">{formatIncrement(size.increment)}</span>
+                      )}
                       <button type="button" onClick={() => removeSize(i)} className="text-warm-gray hover:text-terracotta">
                         <X size={14} />
                       </button>
@@ -395,6 +425,18 @@ export default function AdminProductForm() {
                   onChange={(e) => setNewColorHex(e.target.value)}
                   className="h-10 w-10 cursor-pointer rounded-lg border border-sage-light/50"
                 />
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 font-body text-xs text-warm-gray">₹+</span>
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={newColorIncrement}
+                    onChange={(e) => setNewColorIncrement(e.target.value)}
+                    placeholder="0"
+                    className="w-28 rounded-xl border border-sage-light/50 bg-offwhite py-2.5 pl-8 pr-3 font-body text-sm text-charcoal outline-none focus:border-sage focus:ring-2 focus:ring-sage/20"
+                  />
+                </div>
                 <button
                   type="button"
                   onClick={addColor}
@@ -416,6 +458,9 @@ export default function AdminProductForm() {
                         style={{ backgroundColor: color.hex }}
                       />
                       {color.name}
+                      {color.increment > 0 && (
+                        <span className="text-xs text-sage-dark">{formatIncrement(color.increment)}</span>
+                      )}
                       <button type="button" onClick={() => removeColor(i)} className="text-warm-gray hover:text-terracotta">
                         <X size={14} />
                       </button>

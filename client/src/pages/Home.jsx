@@ -6,7 +6,10 @@ import { Canvas } from '@react-three/fiber';
 import { useProducts } from '../hooks/useProducts';
 import ProductCard from '../components/common/ProductCard';
 import Button from '../components/common/Button';
-import Loading from '../components/common/Loading';
+import { ProductGridSkeleton } from '../components/common/Skeleton';
+import ErrorBoundary from '../components/common/ErrorBoundary';
+import ErrorMessage from '../components/common/ErrorMessage';
+import LazyImage from '../components/common/LazyImage';
 
 import CustomizedItem from '../../public/images/customized_item.png';
 import RitualItem from '../../public/images/ritual_item.png';
@@ -67,24 +70,24 @@ const services = [
 
 const testimonials = [
   {
-    name: 'Sarah M.',
-    text: 'The singing bowl I received is absolutely stunning. The resonance is deep and calming — it has transformed my meditation practice.',
+    name: 'Sujan Gurung',
+    text: 'The singing bowl I received is absolutely stunning. It is deep and calming.',
     rating: 5,
   },
   {
-    name: 'David L.',
-    text: 'Beautiful prayer flags and incredible customer care. You can feel the authenticity in every product.',
-    rating: 5,
+    name: 'Dinesh Thapa',
+    text: 'Beautiful prayer flags and incredible customer care. Thank you.',
+    rating: 4,
   },
   {
-    name: 'Priya K.',
-    text: 'The incense collection is heavenly. The Nag Champa takes me right back to the temples of Kathmandu.',
+    name: 'Priya Kumar',
+    text: 'The incense collection is heavenly. Love the fragrance.',
     rating: 5,
   },
 ];
 
 export default function Home() {
-  const { data, isLoading } = useProducts({ featured: true, limit: 4 });
+  const { data, isLoading, isError, refetch } = useProducts({ featured: true, limit: 4 });
   const products = data?.products || [];
 
   return (
@@ -139,11 +142,19 @@ export default function Home() {
               className="hidden lg:block"
             >
               <div className="relative z-10 aspect-square">
-                <Canvas camera={{ position: [0, 1, 4], fov: 45 }}>
-                  <Suspense fallback={null}>
-                    <HeroScene />
-                  </Suspense>
-                </Canvas>
+                <ErrorBoundary
+                  fallback={
+                    <div className="flex h-full items-center justify-center">
+                      <img src="/bajraguru_logo.png" alt="BajraGuru" className="w-48 drop-shadow-lg" />
+                    </div>
+                  }
+                >
+                  <Canvas camera={{ position: [0, 1, 4], fov: 45 }}>
+                    <Suspense fallback={null}>
+                      <HeroScene />
+                    </Suspense>
+                  </Canvas>
+                </ErrorBoundary>
               </div>
             </motion.div>
           </div>
@@ -251,11 +262,13 @@ export default function Home() {
               >
                 {/* Hover image */}
                 <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={service.image}
-                    alt={service.title}
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
+                  <div className="h-full w-full transition-transform duration-500 group-hover:scale-110">
+                    <LazyImage
+                      src={service.image}
+                      alt={service.title}
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
                   <div className="absolute inset-0 bg-charcoal/20 transition-opacity duration-300 group-hover:opacity-0" />
                 </div>
 
@@ -303,7 +316,9 @@ export default function Home() {
           </motion.div>
 
           {isLoading ? (
-            <Loading size="lg" className="py-20" />
+            <ProductGridSkeleton count={4} />
+          ) : isError ? (
+            <ErrorMessage title="Couldn't load products" message="Please check your connection and try again." onRetry={refetch} />
           ) : (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {products.map((product) => (

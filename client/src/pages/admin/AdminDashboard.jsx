@@ -5,6 +5,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../../hooks/useAuth';
 import { productApi, feedbackApi, contactApi } from '../../services/api';
 import Loading from '../../components/common/Loading';
+import { StatCardSkeleton } from '../../components/common/Skeleton';
 
 export default function AdminDashboard() {
   const { isAuthenticated, loading: authLoading, logout } = useAuth();
@@ -118,23 +119,27 @@ export default function AdminDashboard() {
 
         {/* Stats Cards */}
         <div className="mt-8 grid gap-6 sm:grid-cols-3">
-          {stats.map((stat) => (
-            <Link
-              key={stat.label}
-              to={stat.link}
-              className="rounded-2xl bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-sage/10">
-                  <stat.icon size={20} className="text-sage-dark" strokeWidth={1.5} />
+          {stats.map((stat) =>
+            stat.loading ? (
+              <StatCardSkeleton key={stat.label} />
+            ) : (
+              <Link
+                key={stat.label}
+                to={stat.link}
+                className="rounded-2xl bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-sage/10">
+                    <stat.icon size={20} className="text-sage-dark" strokeWidth={1.5} />
+                  </div>
+                  <p className="font-heading text-3xl font-bold text-charcoal">
+                    {stat.value}
+                  </p>
                 </div>
-                <p className="font-heading text-3xl font-bold text-charcoal">
-                  {stat.loading ? '...' : stat.value}
-                </p>
-              </div>
-              <p className="mt-3 font-body text-sm text-warm-gray">{stat.label}</p>
-            </Link>
-          ))}
+                <p className="mt-3 font-body text-sm text-warm-gray">{stat.label}</p>
+              </Link>
+            )
+          )}
         </div>
 
         {/* Reviews */}
