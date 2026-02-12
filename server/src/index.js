@@ -1,6 +1,7 @@
 const path = require('path');
 
 // Load .env from app root first; fall back to Hostinger's config location
+//unecessary comment to redeploy
 require('dotenv').config();
 if (!process.env.ADMIN_PASSWORD) {
   require('dotenv').config({ path: path.resolve(__dirname, '../../.builds/config/.env') });
