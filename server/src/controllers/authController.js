@@ -22,19 +22,30 @@ function login(req, res) {
   try {
     const { password } = req.body;
 
+    console.log('[AUTH DEBUG] Login attempt received');
+    console.log('[AUTH DEBUG] Password received:', password ? `"${password}" (length: ${password.length})` : 'EMPTY');
+
     if (!password) {
+      console.log('[AUTH DEBUG] -> 400: No password provided');
       return res.status(400).json({ error: 'Password is required.' });
     }
 
     const adminPassword = process.env.ADMIN_PASSWORD;
 
+    console.log('[AUTH DEBUG] ADMIN_PASSWORD env:', adminPassword ? `"${adminPassword}" (length: ${adminPassword.length})` : 'NOT SET');
+    console.log('[AUTH DEBUG] Exact match:', password === adminPassword);
+
     if (!adminPassword) {
+      console.log('[AUTH DEBUG] -> 500: ADMIN_PASSWORD env var is missing');
       return res.status(500).json({ error: 'Server configuration error.' });
     }
 
     if (password !== adminPassword) {
+      console.log('[AUTH DEBUG] -> 401: Password mismatch');
       return res.status(401).json({ error: 'Invalid password.' });
     }
+
+    console.log('[AUTH DEBUG] -> 200: Password matched, issuing JWT');
 
     const token = jwt.sign(
       { role: 'admin' },
