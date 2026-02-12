@@ -1,11 +1,9 @@
 const path = require('path');
 
-// Load .env from app root first; fall back to Hostinger's config location
-//unecessary comment to redeploy
-require('dotenv').config();
-if (!process.env.ADMIN_PASSWORD) {
-  require('dotenv').config({ path: path.resolve(__dirname, '../../.builds/config/.env') });
-}
+// Load .env from app root first; fall back to Hostinger's config location.
+// Use override:true because Passenger may pre-set env vars with incorrect escaping.
+require('dotenv').config({ override: true });
+require('dotenv').config({ path: path.resolve(__dirname, '../../.builds/config/.env'), override: true });
 
 const express = require('express');
 const cors = require('cors');
