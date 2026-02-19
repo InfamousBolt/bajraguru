@@ -15,7 +15,7 @@ const products = [
     description:
       'Hand-hammered Tibetan singing bowl crafted by skilled artisans in Nepal. Produces rich, resonant tones perfect for meditation, sound healing, and chakra balancing. Comes with a wooden mallet and silk cushion.',
     price: 89.99,
-    category: 'meditation',
+    category: 'home-lifestyle',
     featured: 1,
     in_stock: 1,
     popularity_score: 95,
@@ -52,7 +52,7 @@ const products = [
     description:
       'Beautifully detailed Buddha statue in meditation pose (Dhyana Mudra). Cast in cold-cast bronze resin with an antique finish. Stands 12 inches tall. A serene addition to any meditation space or altar.',
     price: 149.99,
-    category: 'statues',
+    category: 'home-lifestyle',
     featured: 1,
     in_stock: 1,
     popularity_score: 92,
@@ -76,7 +76,7 @@ const products = [
     description:
       'Authentic Tibetan Lung Ta prayer flags featuring traditional woodblock prints of the Wind Horse and sacred mantras. Set of 25 flags on a 20-foot string. Colors represent the five elements. Handmade in Nepal.',
     price: 18.99,
-    category: 'decor',
+    category: 'prayer-flags',
     featured: 0,
     in_stock: 1,
     popularity_score: 78,
@@ -92,7 +92,7 @@ const products = [
     description:
       'Traditional round zafu meditation cushion filled with organic buckwheat hulls. Covered in durable, removable cotton canvas in deep saffron. Provides excellent support for cross-legged sitting postures.',
     price: 54.99,
-    category: 'meditation',
+    category: 'home-lifestyle',
     featured: 1,
     in_stock: 1,
     popularity_score: 85,
@@ -113,7 +113,7 @@ const products = [
     description:
       'Traditional Tibetan brass butter lamp (dipa) used for Buddhist altar offerings. Handcrafted with intricate auspicious symbol engravings. Stands 4 inches tall. Can be used with butter or oil.',
     price: 34.99,
-    category: 'ritual',
+    category: 'butter-lamp-pooja',
     featured: 0,
     in_stock: 1,
     popularity_score: 70,
@@ -140,7 +140,7 @@ const products = [
     description:
       'Authentic 108-bead Rudraksha mala for japa meditation and mantra recitation. Each 8mm bead is naturally formed and hand-strung on durable silk thread with a traditional guru bead and tassel.',
     price: 39.99,
-    category: 'meditation',
+    category: 'keychains-bracelets',
     featured: 1,
     in_stock: 1,
     popularity_score: 90,

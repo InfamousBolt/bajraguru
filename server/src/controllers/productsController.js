@@ -145,7 +145,7 @@ function create(req, res) {
       return res.status(400).json({ error: 'Name, description, price, and category are required.' });
     }
 
-    const validCategories = ['decor', 'meditation', 'incense', 'statues', 'ritual', 'edibles'];
+    const validCategories = ['khada', 'prayer-flags', 'butter-lamp-pooja', 'incense', 'home-lifestyle', 'keychains-bracelets', 'wooden-products'];
     if (!validCategories.includes(category)) {
       return res.status(400).json({
         error: `Invalid category. Must be one of: ${validCategories.join(', ')}`,
@@ -197,7 +197,7 @@ function update(req, res) {
     }
 
     if (category) {
-      const validCategories = ['decor', 'meditation', 'incense', 'statues', 'ritual', 'edibles'];
+      const validCategories = ['khada', 'prayer-flags', 'butter-lamp-pooja', 'incense', 'home-lifestyle', 'keychains-bracelets', 'wooden-products'];
       if (!validCategories.includes(category)) {
         return res.status(400).json({
           error: `Invalid category. Must be one of: ${validCategories.join(', ')}`,

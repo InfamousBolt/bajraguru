@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-BajraGuru is a full-stack e-commerce platform for traditional Buddhist products (meditation bowls, incense, statues, decor, ritual items, edibles). The full specification lives in `bajraguru-spec.md`.
+BajraGuru is a full-stack e-commerce platform for traditional Buddhist products (khada, prayer flags, butter lamps, pooja accessories, incense, home & lifestyle, keychains, bracelets, wooden products). The full specification lives in `bajraguru-spec.md`.
 
 ## Tech Stack
 
@@ -56,7 +56,7 @@ MAX_FILE_SIZE=5242880
 
 ## Key Implementation Notes
 
-- Product categories are a fixed set: `decor`, `meditation`, `incense`, `statues`, `ritual`, `edibles`
+- Product categories are a fixed set: `khada`, `prayer-flags`, `butter-lamp-pooja`, `incense`, `home-lifestyle`, `keychains-bracelets`, `wooden-products`
 - Images are processed through Sharp: resize to max 1200px, create 300px thumbnails, convert to WebP
 - Cart is client-side only (no server-side cart persistence)
 - Admin auth is a single shared password, not per-user accounts

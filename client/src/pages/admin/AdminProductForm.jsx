@@ -9,12 +9,13 @@ import Button from '../../components/common/Button';
 import Loading from '../../components/common/Loading';
 
 const categories = [
-  { value: 'meditation', label: 'Meditation' },
+  { value: 'khada', label: 'Khada' },
+  { value: 'prayer-flags', label: 'Prayer Flags' },
+  { value: 'butter-lamp-pooja', label: 'Butter Lamp & Pooja Accessories' },
   { value: 'incense', label: 'Incense' },
-  { value: 'statues', label: 'Statues' },
-  { value: 'decor', label: 'Decor' },
-  { value: 'ritual', label: 'Ritual' },
-  { value: 'edibles', label: 'Edibles' },
+  { value: 'home-lifestyle', label: 'Home & Lifestyle' },
+  { value: 'keychains-bracelets', label: 'Keychains & Bracelets' },
+  { value: 'wooden-products', label: 'Wooden Products' },
 ];
 
 export default function AdminProductForm() {
@@ -31,7 +32,7 @@ export default function AdminProductForm() {
     name: '',
     description: '',
     price: '',
-    category: 'meditation',
+    category: 'khada',
     featured: false,
     in_stock: true,
     popularity_score: 0,

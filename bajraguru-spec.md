@@ -4,8 +4,8 @@
 
 **Project Name:** BajraGuru  
 **Domain:** Traditional Buddhist products e-commerce  
-**Target Market:** Spiritual practitioners, home decor enthusiasts, meditation practitioners  
-**Product Categories:** Meditation bowls, incense, decorative statues, home decor, ritual items
+**Target Market:** Spiritual practitioners, home decor enthusiasts, cultural product enthusiasts
+**Product Categories:** Khada, Prayer Flags, Butter Lamp & Pooja Accessories, Incense, Home & Lifestyle, Keychains & Bracelets, Wooden Products
 
 ---
 
@@ -379,7 +379,7 @@ CREATE TABLE contact_messages (
 );
 
 -- Categories (reference)
--- Values: 'decor', 'meditation', 'incense', 'statues', 'ritual', 'edibles'
+-- Values: 'khada', 'prayer-flags', 'butter-lamp-pooja', 'incense', 'home-lifestyle', 'keychains-bracelets', 'wooden-products'
 ```
 
 ---
@@ -587,7 +587,7 @@ const seedProducts = [
     name: "Tibetan Singing Bowl - Handcrafted",
     description: "Authentic handcrafted singing bowl from Nepal. Perfect for meditation, sound healing, and creating a peaceful atmosphere. Each bowl produces unique harmonic overtones.",
     price: 89.99,
-    category: "meditation",
+    category: "home-lifestyle",
     featured: true,
     images: ["singing-bowl-1.jpg", "singing-bowl-2.jpg"]
   },
@@ -603,7 +603,7 @@ const seedProducts = [
     name: "Buddha Statue - Meditation Pose",
     description: "Elegant Buddha statue in meditation pose. Hand-carved from resin with antique bronze finish. Height: 12 inches.",
     price: 149.99,
-    category: "statues",
+    category: "home-lifestyle",
     featured: true,
     images: ["buddha-meditation.jpg", "buddha-meditation-2.jpg"]
   },
@@ -611,7 +611,7 @@ const seedProducts = [
     name: "Tibetan Prayer Flags - Large",
     description: "Traditional Tibetan prayer flags featuring sacred mantras. Set of 25 flags, each measuring 10x10 inches. Spreads blessings with the wind.",
     price: 24.99,
-    category: "decor",
+    category: "prayer-flags",
     featured: false,
     images: ["prayer-flags.jpg"]
   },
@@ -619,7 +619,7 @@ const seedProducts = [
     name: "Meditation Cushion - Zafu",
     description: "Traditional round meditation cushion filled with organic buckwheat hulls. Removable cover in sage green. Supports proper posture during meditation.",
     price: 54.99,
-    category: "meditation",
+    category: "home-lifestyle",
     featured: false,
     images: ["zafu-cushion.jpg"]
   },
@@ -627,7 +627,7 @@ const seedProducts = [
     name: "Brass Butter Lamp - Traditional",
     description: "Handcrafted brass butter lamp for altar offerings. Traditional Tibetan design. Height: 4 inches.",
     price: 34.99,
-    category: "ritual",
+    category: "butter-lamp-pooja",
     featured: false,
     images: ["butter-lamp.jpg"]
   },
@@ -643,7 +643,7 @@ const seedProducts = [
     name: "Mala Beads - Rose Quartz",
     description: "108 rose quartz mala beads for meditation and mantra practice. Promotes love and compassion. Handknotted with silk tassel.",
     price: 39.99,
-    category: "meditation",
+    category: "keychains-bracelets",
     featured: true,
     images: ["mala-rose-quartz.jpg"]
   }

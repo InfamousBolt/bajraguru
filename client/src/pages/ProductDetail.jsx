@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Mail, MessageCircle } from 'lucide-react';
 import { useProduct, useProducts } from '../hooks/useProducts';
 import { formatPrice, formatIncrement } from '../utils/formatPrice';
+import { getCategoryLabel } from '../utils/categories';
 import { WHATSAPP_NUMBER, EMAIL } from '../config/contact';
 import ProductCard from '../components/common/ProductCard';
 import { ProductDetailSkeleton } from '../components/common/Skeleton';
@@ -128,7 +129,7 @@ export default function ProductDetail() {
         <nav className="mb-8 font-body text-sm text-warm-gray">
           <Link to="/shop" className="hover:text-sage-dark">Shop</Link>
           <span className="mx-2">/</span>
-          <span className="capitalize">{product.category}</span>
+          <span>{getCategoryLabel(product.category)}</span>
           <span className="mx-2">/</span>
           <span className="text-charcoal">{product.name}</span>
         </nav>
@@ -233,7 +234,7 @@ export default function ProductDetail() {
           {/* Product Info */}
           <div className="flex flex-col justify-center">
             <span className="font-body text-xs font-medium uppercase tracking-[0.2em] text-sage-dark">
-              {product.category}
+              {getCategoryLabel(product.category)}
             </span>
             <h1 className="mt-2 font-heading text-4xl font-bold text-charcoal md:text-5xl">
               {product.name}

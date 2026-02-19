@@ -4,6 +4,7 @@ import { Plus, Pencil, Trash2, LogOut, ArrowLeft } from 'lucide-react';
 import { useProducts, useDeleteProduct } from '../../hooks/useProducts';
 import { useAuth } from '../../hooks/useAuth';
 import { formatPrice } from '../../utils/formatPrice';
+import { getCategoryLabel } from '../../utils/categories';
 import Loading from '../../components/common/Loading';
 
 export default function AdminProducts() {
@@ -127,7 +128,7 @@ export default function AdminProducts() {
                     </td>
                     <td className="hidden px-6 py-4 md:table-cell">
                       <span className="rounded-full bg-sage/10 px-3 py-1 font-body text-xs capitalize text-sage-dark">
-                        {product.category}
+                        {getCategoryLabel(product.category)}
                       </span>
                     </td>
                     <td className="px-6 py-4 font-body text-sm text-charcoal">

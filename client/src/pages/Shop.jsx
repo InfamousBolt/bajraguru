@@ -9,12 +9,13 @@ import ErrorMessage from '../components/common/ErrorMessage';
 
 const categories = [
   { value: '', label: 'All Products' },
-  { value: 'meditation', label: 'Meditation' },
+  { value: 'khada', label: 'Khada' },
+  { value: 'prayer-flags', label: 'Prayer Flags' },
+  { value: 'butter-lamp-pooja', label: 'Butter Lamp & Pooja Accessories' },
   { value: 'incense', label: 'Incense' },
-  { value: 'statues', label: 'Statues' },
-  { value: 'decor', label: 'Decor' },
-  { value: 'ritual', label: 'Ritual' },
-  { value: 'edibles', label: 'Edibles' },
+  { value: 'home-lifestyle', label: 'Home & Lifestyle' },
+  { value: 'keychains-bracelets', label: 'Keychains & Bracelets' },
+  { value: 'wooden-products', label: 'Wooden Products' },
 ];
 
 const sortOptions = [

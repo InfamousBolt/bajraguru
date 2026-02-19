@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { formatPrice } from '../../utils/formatPrice';
+import { getCategoryLabel } from '../../utils/categories';
 import LazyImage from './LazyImage';
 
 export default function ProductCard({ product }) {
@@ -49,7 +50,7 @@ export default function ProductCard({ product }) {
             {/* Category badge */}
             {category && (
               <span className="absolute left-3 top-3 rounded-full bg-offwhite/90 px-3 py-1 font-body text-[10px] font-medium uppercase tracking-widest text-charcoal backdrop-blur-sm">
-                {category}
+                {getCategoryLabel(category)}
               </span>
             )}
 

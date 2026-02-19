@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS products (
   name TEXT NOT NULL,
   description TEXT NOT NULL,
   price REAL NOT NULL,
-  category TEXT NOT NULL CHECK(category IN ('decor','meditation','incense','statues','ritual','edibles')),
+  category TEXT NOT NULL CHECK(category IN ('khada','prayer-flags','butter-lamp-pooja','incense','home-lifestyle','keychains-bracelets','wooden-products')),
   featured INTEGER DEFAULT 0,
   in_stock INTEGER DEFAULT 1,
   popularity_score INTEGER DEFAULT 0,
